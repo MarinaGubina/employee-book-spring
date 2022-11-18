@@ -26,14 +26,6 @@ public class EmployeeRequest {
         return department;
     }
 
-    public void setDepartment(int department) {
-        if (department < 1 || department > 5) {
-            System.out.println("Отдела не существует");
-            return;
-        }
-        this.department = department;
-    }
-
     public int getSalary() {
         return salary;
     }
