@@ -16,8 +16,8 @@ POST http://localhost:8080/employees
 Content-Type: application/json
 
 {
-  "firstName": "Test",
-  "lastName": "Test",
+  "firstName": "Mariya",
+  "lastName": "Petrova",
   "department": 2,
   "salary": 3000
 }
@@ -27,8 +27,8 @@ POST http://localhost:8080/employees
 Content-Type: application/json
 
 {
-  "firstName": "Test",
-  "lastName": "Test",
+  "firstName": "Maksim",
+  "lastName": "semenov",
   "department": 5,
   "salary": 4500
 }
@@ -38,8 +38,8 @@ POST http://localhost:8080/employees
 Content-Type: application/json
 
 {
-  "firstName": "Petr1",
-  "lastName": "Test",
+  "firstName": "Petr",
+  "lastName": "rodionov",
   "department": 5,
   "salary": 8000
 }
@@ -56,3 +56,11 @@ GET http://localhost:8080/employees/salary/max
 ### Получить сотрудников с зарплатой больше средней
 GET http://localhost:8080/employees/high-salary
 
+### Получить коллекцию сотрудников
+GET http://localhost:8080/department/employees
+
+### получение сотрудников из департамента
+GET http://localhost:8080/department/5
+
+### сумма зарплат по департаменту
+GET http://localhost:8080/department/5/salary/sum

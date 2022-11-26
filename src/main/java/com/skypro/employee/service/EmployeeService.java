@@ -42,20 +42,20 @@ public class EmployeeService {
     public Employee getEmployeeSalaryMin(){
          return employees.values().stream()
                  .min((s1,s2)-> Integer.compare(s1.getSalary(),s2.getSalary()))
-                 .orElse(null);
+                 .orElseThrow(()-> new RuntimeException(" Нет сотрудников"));
     }
 
     public Employee getEmployeeSalaryMax(){
         return employees.values().stream()
                 .max((s1,s2)->Integer.compare(s1.getSalary(),s2.getSalary()))
-                .orElse(null);
+                .orElseThrow(()-> new RuntimeException(" Нет сотрудников"));
     }
 
     public List<Employee> getAboveAverageSalary(){
         double averageSalary = employees.values().stream()
                 .mapToInt(Employee::getSalary)
                 .average()
-                .orElseThrow();
+                .orElseThrow(()-> new RuntimeException(" Нет сотрудников"));
 
         return employees.values().stream()
                 .filter(e -> e.getSalary() > averageSalary)
