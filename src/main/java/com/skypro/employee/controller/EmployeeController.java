@@ -2,62 +2,51 @@ package com.skypro.employee.controller;
 
 import com.skypro.employee.model.Employee;
 import com.skypro.employee.record.EmployeeRequest;
-import com.skypro.employee.service.EmployeeService;
+import com.skypro.employee.service.EmployeeServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-
-/*
-HTTP методы
-* GET получение ресурса или набора ресурсов
-* POST создание ресурса
-* PUT модификация ресурса
-* PATCH частичная модификация ресурса
-* DELETE удаление ресурса
-
- */
 
 @RestController
 public class EmployeeController {
-    private final EmployeeService employeeService;
+    private final EmployeeServiceImpl employeeServiceImpl;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    public EmployeeController(EmployeeServiceImpl employeeServiceImpl) {
+        this.employeeServiceImpl = employeeServiceImpl;
     }
 
     @GetMapping("/employees")
     public Collection<Employee> getAllEmployees(){
-        return this.employeeService.getAllEmployees();
+        return this.employeeServiceImpl.getAllEmployees();
     }
 
     @PostMapping("/employees")
     public Employee createEmployee(@RequestBody EmployeeRequest employeeRequest){
-        return this.employeeService.addEmployee(employeeRequest);
+        return this.employeeServiceImpl.addEmployee(employeeRequest);
     }
 
     @GetMapping("/employees/salary/sum")
     public int getSalarySum(){
-        return this.employeeService.getSalarySum();
+        return this.employeeServiceImpl.getSalarySum();
     }
 
     @GetMapping("/employees/salary/min")
     public Employee getEmployeeSalaryMin(){
-        return this.employeeService.getEmployeeSalaryMin();
+        return this.employeeServiceImpl.getEmployeeSalaryMin();
     }
 
     @GetMapping("/employees/salary/max")
     public Employee getEmployeeSalaryMax(){
-        return this.employeeService.getEmployeeSalaryMax();
+        return this.employeeServiceImpl.getEmployeeSalaryMax();
     }
 
     @GetMapping("/employees/high-salary")
     public List<Employee> getAboveAverageSalary(){
-        return this.employeeService.getAboveAverageSalary();
+        return this.employeeServiceImpl.getAboveAverageSalary();
     }
 
 }

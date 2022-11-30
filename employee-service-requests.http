@@ -60,7 +60,7 @@ GET http://localhost:8080/employees/high-salary
 GET http://localhost:8080/department/employees
 
 ### получение сотрудников из департамента
-GET http://localhost:8080/department/5
+GET http://localhost:8080/department/5/employees
 
 ### сумма зарплат по департаменту
 GET http://localhost:8080/department/5/salary/sum
