@@ -1,8 +1,8 @@
 package com.skypro.employee;
 
 import com.skypro.employee.model.Employee;
-import com.skypro.employee.repository.EmployeesRepository;
 import com.skypro.employee.service.DepartmentServiceImpl;
+import com.skypro.employee.service.EmployeeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class DepartmentServiceTest {
 
     @Mock
-    private EmployeesRepository employeesRepository;
+    private EmployeeServiceImpl employeeService;
 
     @InjectMocks
     private DepartmentServiceImpl departmentService;
@@ -37,7 +37,7 @@ public class DepartmentServiceTest {
         Employee employee4 = new Employee("Asya","Asina",1,20000);
         actualEmployees = new ArrayList<>(List.of(employee1,employee2,employee3,employee4));
 
-        when(employeesRepository.getAllEmployees()).thenReturn(actualEmployees);
+        when(employeeService.getAllEmployees()).thenReturn(actualEmployees);
     }
 
     @Test

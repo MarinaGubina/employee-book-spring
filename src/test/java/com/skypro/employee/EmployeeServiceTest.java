@@ -2,88 +2,69 @@ package com.skypro.employee;
 
 import com.skypro.employee.model.Employee;
 import com.skypro.employee.record.EmployeeRequest;
-import com.skypro.employee.repository.EmployeesRepository;
+import com.skypro.employee.service.EmployeeService;
 import com.skypro.employee.service.EmployeeServiceImpl;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTest {
 
-    @Mock
-    private EmployeesRepository employeesRepository;
-
-    @InjectMocks
-    private EmployeeServiceImpl employeeService;
-
-    private List<Employee> actualEmployees;
+    private EmployeeService employeeService;
+    private List<Employee> employees;
 
     @BeforeEach
     public void setUp() {
-        Employee employee1 = new Employee("Ivan", "Ivanov", 2, 22000);
-        Employee employee2 = new Employee("Katya", "Katina", 1, 33000);
-        Employee employee3 = new Employee("Petr", "Petrov", 3, 25000);
-        Employee employee4 = new Employee("Asya", "Asina", 1, 20000);
-        actualEmployees = new ArrayList<>(List.of(employee1, employee2, employee3, employee4));
-
-        when(employeesRepository.getAllEmployees()).thenReturn(actualEmployees);
-    }
-
-    @Test
-    public void shouldGetListAllEmployees() {
-        Collection<Employee> expected = employeeService.getAllEmployees();
-        assertEquals(expected, actualEmployees);
+        this.employeeService = new EmployeeServiceImpl();
+        Stream.of (
+        new EmployeeRequest("Ivan", "Ivanov", 2, 22000),
+        new EmployeeRequest("Katya", "Katina", 1, 33000),
+        new EmployeeRequest("Petr", "Petrov", 3, 25000))
+                .forEach(employeeService::addEmployee);
     }
 
     @Test
     public void shouldAddEmployees() {
-        EmployeeRequest request = new EmployeeRequest("Petr", "Petrov", 1, 25000);
+        EmployeeRequest request = new EmployeeRequest("Masha", "Petrova", 5, 10000);
         Employee result = employeeService.addEmployee(request);
-        assertThat(employeeService.getAllEmployees()).contains(result);
+        assertEquals(request.getFirstName(), result.getFirstName());
+        assertEquals(request.getLastName(), result.getLastName());
+        assertEquals(request.getDepartment(), result.getDepartment());
+        assertEquals(request.getSalary(), result.getSalary());
+        Assertions.assertThat(employeeService.getAllEmployees()).contains(result);
     }
 
     @Test
     public void shouldGetSalarySumAllEmployees() {
-        final int expected  = actualEmployees.stream()
-                .mapToInt(Employee::getSalary)
-                .sum();
-        final int actual = employeeService.getSalarySum();
-        assertEquals(expected, actual);
+        assertEquals(80_000, employeeService.getSalarySum());
     }
 
     @Test
     public void shouldGetSalaryMinAmongAllEmployees() {
-        final int actual = employeeService.getEmployeeSalaryMin().getSalary();
-        assertEquals(20000, actual);
+        assertEquals(22_000, employeeService.getEmployeeSalaryMin().getSalary());
     }
 
     @Test
     public void shouldGetSalaryMaxAmongAllEmployees() {
-        final int actual = employeeService.getEmployeeSalaryMax().getSalary();
-        assertEquals(33000, actual);
+        assertEquals(33_000, employeeService.getEmployeeSalaryMax().getSalary());
     }
 
     @Test
     public void shouldReturnAllEmployeesAboveAverageSalary(){
-        final double averageSalary = actualEmployees.stream()
+        final double averageSalary = employeeService.getAllEmployees().stream()
                 .mapToInt(Employee::getSalary)
                 .average()
                 .orElseThrow();
 
-        final List<Employee> actual = actualEmployees.stream()
+        final List<Employee> actual = employeeService.getAllEmployees().stream()
                 .filter(e -> e.getSalary() > averageSalary)
                 .collect(Collectors.toList());
         final List<Employee> expected = employeeService.getAboveAverageSalary();

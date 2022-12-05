@@ -1,7 +1,6 @@
 package com.skypro.employee.service;
 
 import com.skypro.employee.model.Employee;
-import com.skypro.employee.repository.EmployeesRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,17 +10,17 @@ import java.util.stream.Collectors;
 @Service
 public class DepartmentServiceImpl implements DepartmentService{
 
-    private final EmployeesRepository employeesRepository;
+    private final EmployeeServiceImpl employeeService;
 
-    public DepartmentServiceImpl(EmployeesRepository employeesRepository) {
-        this.employeesRepository = employeesRepository;
+    public DepartmentServiceImpl(EmployeeServiceImpl employeeService) {
+        this.employeeService = employeeService;
     }
 
     // получение сотрудников из департамента
     @Override
     public List<Employee> getEmployeesFromDepartment(int dep){
         List<Employee> listEmployeesFromDepartment =
-        employeesRepository.getAllEmployees().stream()
+        employeeService.getAllEmployees().stream()
                 .filter(e -> e.getDepartment() == dep)
                 .collect(Collectors.toList());
         return listEmployeesFromDepartment;
@@ -30,7 +29,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     // сумма зарплат по департаменту
     @Override
     public int getSumSalariesFromDepartment(int dep){
-        return employeesRepository.getAllEmployees().stream()
+        return employeeService.getAllEmployees().stream()
                 .filter(e -> e.getDepartment() == dep)
                 .mapToInt(Employee::getSalary)
                 .sum();
@@ -39,7 +38,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     // максимальная зарплата по департаменту
     @Override
     public int getMaxSalaryFromDepartment(int dep){
-        return  employeesRepository.getAllEmployees().stream()
+        return  employeeService.getAllEmployees().stream()
                 .filter(e -> e.getDepartment() == dep)
                 .mapToInt(Employee::getSalary)
                 .max()
@@ -49,7 +48,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     // минимальная зарплата по департаменту
     @Override
     public int getMinSalaryFromDepartment(int dep){
-        return employeesRepository.getAllEmployees().stream()
+        return employeeService.getAllEmployees().stream()
                 .filter(e -> e.getDepartment() == dep)
                 .mapToInt(Employee::getSalary)
                 .min()
@@ -62,7 +61,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Override
     public Map<Integer,List<Employee>> getSortedEmployees(){
         Map<Integer,List<Employee>> sortedEmployees =
-                employeesRepository.getAllEmployees().stream()
+                employeeService.getAllEmployees().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment));
         return sortedEmployees;
     }
